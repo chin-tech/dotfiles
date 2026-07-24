@@ -1,0 +1,290 @@
+# Should you change your keyboard layout some time, delete
+# this file and re-run i3-config-wizard(1).
+
+set $mod Mod4
+
+set $monitor1 "eDP-1"
+set $monitor2 "HDMI-1-0"
+set $term ghostty
+set $selected_wallpaper ~/Pictures/wallpapers/space_jelly.jpg
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Window Font. Bar Font unless overwritten in bar block {}
+font pango:Monaspace Radon NF, FontAwesome 9
+
+
+## XDG / NM Applet XSS Locks ##
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/.config/i3/lock.png -t --nofork
+exec --no-startup-id xset s off
+exec --no-startup-id xset dpms 1800 1800 1800
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+
+## Monitors And Background
+exec_always --no-startup-id xrandr --output $monitor1 --auto --output $monitor2 --auto --right-of $monitor1
+exec_always --no-startup-id ~/.config/i3/.fehbg
+#Transparency
+exec --no-startup-id picom
+
+## Peripherals ##
+#Mouse acceleration off
+exec --no-startup-id xset m 0 0 
+#Touchpad off
+exec --no-startup-id xinput --disable $(xinput --list | grep -i 'touchpad' | cut -f2 | awk -F'=' '{print $2}')
+## KDE -- Android
+exec --no-startup-id kdeconnectd
+#Keyboard Capslock rebind
+exec_always --no-startup-id setxkbmap -option caps:escape
+
+
+## Audio ##
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+
+## Custom Bindings To launch Applications ##
+# start a terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec $term
+bindsym $mod+t exec $term
+# processes
+bindsym $mod+p exec $term -e htop
+# file viewer
+bindsym $mod+b exec $term -e lf 
+# mail
+bindsym $mod+m exec $term -e mutt
+# web-browser
+bindsym $mod+w exec zen
+
+# kill focused window
+bindsym $mod+Shift+q kill
+bindsym $mod+q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -nb "#4a0000"
+
+## Navigation Bindings ##
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+#Resize windows
+bindsym $mod+Control+h resize shrink width 10 px or 10 ppt
+bindsym $mod+Control+j resize grow height 10 px or 10 ppt
+bindsym $mod+Control+k resize shrink height 10 px or 10 ppt
+bindsym $mod+Control+l resize grow width 10 px or 10 ppt
+
+
+
+## Splits ##
+# split in horizontal orientation
+bindsym $mod+semicolon split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+
+## Containers ##
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+bracketleft layout stacking
+bindsym $mod+bracketright layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+
+## Screenshot capabilities ##
+bindsym $mod+Shift+s exec "~/.scripts/scrgrp.sh root"
+bindsym $mod+s exec "flameshot gui"
+# Screenshot capability
+bindsym --release $mod+Shift+s exec --no-startup-id scrot -s -f -o /tmp/snip.png && xclip -selection clipboard -t image/png -i /tmp/snip.png
+
+# focus the child container
+#bindsym $mod+d focus child
+
+## Custom Floating Windows ##
+assign [instance="calculator"] scratchpad
+assign [instance="scratch"] scratchpad
+for_window [instance="calculator"] floating enable, resize set 600 400, move position center
+for_window [instance="scratch"] floating enable, resize set 600 400, move position center
+exec --nostartup-id $term -name calculator -e gnome-calculator
+exec --nostartup-id $term -name scratch 
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+#mail
+#floating windows
+bindsym $mod+u [instance="scratch"]  scratchpad show; move position center
+bindsym $mod+c [instance="calculator"] scratchpad show; move position center
+
+
+## Workspace Names ##
+set $ws_terminals "1: Terminals"
+set $ws_web "2: Web"
+set $ws_office "3: Networks|Office"
+set $ws_notes "4: Notes|Virtuals"
+set $ws_trading "5: Other"
+set $ws_gimp "6: Art"
+set $ws_music "7: Spotify"
+set $ws_other "8: Other"
+set $ws9 "9: Zoom - Primary Monitor"
+set $ws10 "10:"
+
+## Workspace Navigation ##
+# switch to workspace
+bindsym $mod+1 workspace number $ws_terminals
+bindsym $mod+2 workspace number $ws_web
+bindsym $mod+3 workspace number $ws_office
+bindsym $mod+4 workspace number $ws_notes
+bindsym $mod+5 workspace number $ws_trading
+bindsym $mod+6 workspace number $ws_gimp
+bindsym $mod+7 workspace number $ws_music
+bindsym $mod+8 workspace number $ws_other
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws_terminals
+bindsym $mod+Shift+2 move container to workspace number $ws_web
+bindsym $mod+Shift+3 move container to workspace number $ws_office
+bindsym $mod+Shift+4 move container to workspace number $ws_notes
+bindsym $mod+Shift+5 move container to workspace number $ws_trading
+bindsym $mod+Shift+6 move container to workspace number $ws_gimp
+bindsym $mod+Shift+7 move container to workspace number $ws_music
+bindsym $mod+Shift+8 move container to workspace number $ws_other
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+## Workspace gaps ##
+smart_gaps on
+gaps outer 2px
+gaps inner 4px
+workspace $ws_web gaps outer 0
+workspace $ws_trading gaps outer 0
+workspace $ws_gimp gaps outer 0
+
+
+## Workspace Specific Monitors and Applications ##
+## Monitor 1 ##
+workspace $ws_terminals output $monitor1
+workspace $ws_office output $monitor1
+workspace $ws_notes output $monitor1
+workspace $ws_gimp output $monitor1
+## Monitor 2 ##
+workspace $ws_web output $monitor2
+workspace $ws_trading output $monitor2
+workspace $ws_music output $monitor2
+
+# Application assignments
+# Find class via xprop -> click application
+assign [class="firefox-esr-esr115"] $ws_web
+assign [class="zen"] $ws_web
+assign [class="Navigator"] $ws_web
+assign [class="obsidian"] $ws_notes
+assign [class="TradingView"] $ws_trading
+assign [class="Gimp"] $ws_gimp
+assign [class="libreoffice"] $ws_office
+assign [class="ZAP"] $ws_office
+assign [class="burp-StartBurp"] $ws_office
+assign [class="install4j-burp-StartBurp"] $ws_office
+assign [class="Spotify"] $ws_music
+assign [class="discord"] $ws_trading
+assign [class="zoom"] $ws9
+## Default Worksapce ##
+exec --no-startup-id i3-msg workspace $ws_terminals
+
+
+## Config Reload -- Exit ##
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+
+## I3Colors and I3Bar Config ##
+# set $border_color "#000000"
+# #Background colors
+# set $urgent_bg_color "#4a0000"
+# set $inactive_color "#333333"
+# set $bg_color     "#011f4b"
+# # set $bg_color     "#FFFF4b"
+# set $sep_color    "#0F0F00"
+# #Text colors
+# set $text_color   "#BBBBBB"
+# set $text_inactive_color "#555555"
+# set $active_ws_text_color "#000000"
+# #Workspace colors
+# set $active_ws "#7efaff"
+# set $inactive_ws "#e6e6fa"
+
+#Background colors
+set $bg_color          "#011f4b"   
+set $inactive_color    "#1a3560"   
+set $sep_color         "#0d1f3c"   
+set $urgent_bg_color   "#6b1a1a"   
+
+#Text colors
+set $text_color              "#d6e4f7"   
+set $text_inactive_color     "#7a9cc9"   
+set $active_ws_text_color    "#011f4b"   
+
+#Workspace colors
+set $active_ws     "#c9a84c"   
+set $inactive_ws   "#1a3560"   
+set $border_color  "#0d1f3c"   
+
+#Urgent / alert accent
+set $urgent_text   "#f4a261"   
+# Start i3bar to display a workspace bar 
+bar {
+        # font pango:Hack Nerd Font Mono 9, FontAwesome 9
+        font pango:Monaspace Radon NF, FontAwesome 9
+        status_command i3status-rs ~/.config/i3status-rust/config.toml
+        colors {
+                background $bg_color
+                separator $sep_color
+                #                       Border          Background      Text
+                focused_workspace       $border_color   $active_ws       $active_ws_text_color
+                inactive_workspace      $border_color   $inactive_ws     $text_inactive_color
+                urgent_workspace        $border_color   $urgent_color    $text_color
+        }
+}
+
+
+

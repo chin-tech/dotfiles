@@ -1,0 +1,16 @@
+Tab: menu-complete
+Control-q: complete
+#shift-tab
+"\e[Z": menu-complete-backward
+
+set show-all-if-ambiguous on
+
+#Treat symlinks like directories rather than files.
+set mark-symlinked-directories on
+
+set completion-ignore-case on
+set completion-map-case on
+
+# use GNU ls colors for tab-completion as well
+set colored-stats on
+

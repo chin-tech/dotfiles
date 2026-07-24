@@ -1,0 +1,96 @@
+
+#import "styled/dark.ayu-dark.typst": doc_dark_ayu_dark
+#import "styled/dark.ayu-light.typst": doc_dark_ayu_light
+#import "styled/dark.ayu-mirage.typst": doc_dark_ayu_mirage
+#import "styled/dark.catppuccin-frappe.typst": doc_dark_catppuccin_frappe
+#import "styled/dark.catppuccin-latte.typst": doc_dark_catppuccin_latte
+#import "styled/dark.catppuccin-macchiato.typst": doc_dark_catppuccin_macchiato
+#import "styled/dark.catppuccin-mocha.typst": doc_dark_catppuccin_mocha
+#import "styled/light.ayu-dark.typst": doc_light_ayu_dark
+#import "styled/light.ayu-light.typst": doc_light_ayu_light
+#import "styled/light.ayu-mirage.typst": doc_light_ayu_mirage
+#import "styled/light.catppuccin-frappe.typst": doc_light_catppuccin_frappe
+#import "styled/light.catppuccin-latte.typst": doc_light_catppuccin_latte
+#import "styled/light.catppuccin-macchiato.typst": doc_light_catppuccin_macchiato
+#import "styled/light.catppuccin-mocha.typst": doc_light_catppuccin_mocha
+#import "styled/phone.dark.ayu-dark.typst": doc_phone_dark_ayu_dark
+#import "styled/phone.dark.ayu-light.typst": doc_phone_dark_ayu_light
+#import "styled/phone.dark.ayu-mirage.typst": doc_phone_dark_ayu_mirage
+#import "styled/phone.dark.catppuccin-frappe.typst": doc_phone_dark_catppuccin_frappe
+#import "styled/phone.dark.catppuccin-latte.typst": doc_phone_dark_catppuccin_latte
+#import "styled/phone.dark.catppuccin-macchiato.typst": doc_phone_dark_catppuccin_macchiato
+#import "styled/phone.dark.catppuccin-mocha.typst": doc_phone_dark_catppuccin_mocha
+#import "styled/phone.light.ayu-dark.typst": doc_phone_light_ayu_dark
+#import "styled/phone.light.ayu-light.typst": doc_phone_light_ayu_light
+#import "styled/phone.light.ayu-mirage.typst": doc_phone_light_ayu_mirage
+#import "styled/phone.light.catppuccin-frappe.typst": doc_phone_light_catppuccin_frappe
+#import "styled/phone.light.catppuccin-latte.typst": doc_phone_light_catppuccin_latte
+#import "styled/phone.light.catppuccin-macchiato.typst": doc_phone_light_catppuccin_macchiato
+#import "styled/phone.light.catppuccin-mocha.typst": doc_phone_light_catppuccin_mocha
+
+#let modes = ("dark", "light")
+#let theme_names = (
+    "dark.ayu-dark",
+    "dark.ayu-light",
+    "dark.ayu-mirage",
+    "dark.catppuccin-frappe",
+    "dark.catppuccin-latte",
+    "dark.catppuccin-macchiato",
+    "dark.catppuccin-mocha",
+    "light.ayu-dark",
+    "light.ayu-light",
+    "light.ayu-mirage",
+    "light.catppuccin-frappe",
+    "light.catppuccin-latte",
+    "light.catppuccin-macchiato",
+    "light.catppuccin-mocha",
+    "phone.dark.ayu-dark",
+    "phone.dark.ayu-light",
+    "phone.dark.ayu-mirage",
+    "phone.dark.catppuccin-frappe",
+    "phone.dark.catppuccin-latte",
+    "phone.dark.catppuccin-macchiato",
+    "phone.dark.catppuccin-mocha",
+    "phone.light.ayu-dark",
+    "phone.light.ayu-light",
+    "phone.light.ayu-mirage",
+    "phone.light.catppuccin-frappe",
+    "phone.light.catppuccin-latte",
+    "phone.light.catppuccin-macchiato",
+    "phone.light.catppuccin-mocha",
+)
+
+
+#let doc(theme: "dark.ayu-dark") = {
+  if theme not in theme_names {
+    panic("theme should be one of (" + theme_names.join(",") + ")")
+  }
+  if theme == "dark.ayu-dark" { doc_dark_ayu_dark }
+  if theme == "dark.ayu-light" { doc_dark_ayu_light }
+  if theme == "dark.ayu-mirage" { doc_dark_ayu_mirage }
+  if theme == "dark.catppuccin-frappe" { doc_dark_catppuccin_frappe }
+  if theme == "dark.catppuccin-latte" { doc_dark_catppuccin_latte }
+  if theme == "dark.catppuccin-macchiato" { doc_dark_catppuccin_macchiato }
+  if theme == "dark.catppuccin-mocha" { doc_dark_catppuccin_mocha }
+  if theme == "light.ayu-dark" { doc_light_ayu_dark }
+  if theme == "light.ayu-light" { doc_light_ayu_light }
+  if theme == "light.ayu-mirage" { doc_light_ayu_mirage }
+  if theme == "light.catppuccin-frappe" { doc_light_catppuccin_frappe }
+  if theme == "light.catppuccin-latte" { doc_light_catppuccin_latte }
+  if theme == "light.catppuccin-macchiato" { doc_light_catppuccin_macchiato }
+  if theme == "light.catppuccin-mocha" { doc_light_catppuccin_mocha }
+  if theme == "phone.dark.ayu-dark" { doc_phone_dark_ayu_dark }
+  if theme == "phone.dark.ayu-light" { doc_phone_dark_ayu_light }
+  if theme == "phone.dark.ayu-mirage" { doc_phone_dark_ayu_mirage }
+  if theme == "phone.dark.catppuccin-frappe" { doc_phone_dark_catppuccin_frappe }
+  if theme == "phone.dark.catppuccin-latte" { doc_phone_dark_catppuccin_latte }
+  if theme == "phone.dark.catppuccin-macchiato" { doc_phone_dark_catppuccin_macchiato }
+  if theme == "phone.dark.catppuccin-mocha" { doc_phone_dark_catppuccin_mocha }
+  if theme == "phone.light.ayu-dark" { doc_phone_light_ayu_dark }
+  if theme == "phone.light.ayu-light" { doc_phone_light_ayu_light }
+  if theme == "phone.light.ayu-mirage" { doc_phone_light_ayu_mirage }
+  if theme == "phone.light.catppuccin-frappe" { doc_phone_light_catppuccin_frappe }
+  if theme == "phone.light.catppuccin-latte" { doc_phone_light_catppuccin_latte }
+  if theme == "phone.light.catppuccin-macchiato" { doc_phone_light_catppuccin_macchiato }
+  if theme == "phone.light.catppuccin-mocha" { doc_phone_light_catppuccin_mocha }
+}

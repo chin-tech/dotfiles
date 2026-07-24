@@ -1,0 +1,122 @@
+icons_format = "{icon} "
+
+[theme]
+theme = "dracula"
+# [theme.overrides]
+#
+# separator_bg = "#44444455"
+# idle_bg = "#123456"
+# idle_fg = "#abcdef"
+
+[icons]
+icons = "awesome6"
+# [icons.overrides]
+# bat = ["|E|", "|_|", "|=|", "🔋"]
+# bat_charging = "|^| "
+
+[[block]]
+block = "net"
+format = " $icon {$signal_strength $ssid $frequency|Wired connection} $device "
+format_alt = " $icon {$signal_strength $ssid $frequency|Wired connection} $ip "
+[block.theme_overrides]
+# idle_bg = "#027d6c"
+# good_bg = "#013220"
+# bad_bg = "#cc4949"
+idle_bg  = "#015c50"   # teal — brighter idle
+idle_fg  = "#7de8d0"   # light teal text
+good_bg  = "#013d2a"   # deep forest green
+good_fg  = "#4ecba0"   # mid teal text
+bad_bg   = "#cc4949"   # keep your red
+bad_fg   = "#ffd0d0"   # soft pink-white on red
+
+[[block]]
+block = "cpu"
+format = "$icon $utilization $frequency "
+format_alt = "$icon $utilization "
+info_cpu = 20
+warning_cpu = 50
+critical_cpu = 90
+[block.theme_overrides]
+idle_bg     = "#012a47"   # deep steel blue
+idle_fg     = "#7ab8e8"   # soft sky blue
+info_bg     = "#012a47"
+info_fg     = "#7ab8e8"
+warning_bg  = "#2a1f00"   # dark amber
+warning_fg  = "#c9a84c"   # gold — matches active WS
+critical_bg = "#6b1a1a"   # matches urgent WS from i3
+critical_fg = "#f4a261"   # warm amber on crimson
+
+[[block]]
+block = "disk_space"
+path = "/"
+info_type = "available"
+alert_unit = "GB"
+interval = 20
+warning = 20.0
+alert = 10.0
+format = " $icon : $available.eng(w:2) "
+[block.theme_overrides]
+idle_bg     = "#011f3a"   # darkest navy — subtle
+idle_fg     = "#8ab4d4"   # light slate
+warning_bg  = "#2a1f00"
+warning_fg  = "#c9a84c"
+critical_bg = "#6b1a1a"
+critical_fg = "#f4a261"
+
+[[block]]
+block = "memory"
+format = " $icon $mem_used.eng(w:2,u:B) "
+format_alt = " $icon_swap $swap_used.eng(w:2) "
+warning_mem = 75.0
+critical_mem = 90.0
+[block.theme_overrides]
+idle_bg     = "#06162e"   # near-black navy
+idle_fg     = "#7a9cc9"   # steel blue — slightly cooler than disk
+warning_bg  = "#2a1f00"
+warning_fg  = "#c9a84c"
+critical_bg = "#6b1a1a"
+critical_fg = "#f4a261"
+
+[[block]]
+block = "sound"
+[[block.click]]
+button = "left"
+cmd = "pavucontrol"
+[block.theme_overrides]
+idle_bg = "#0d1f3c"   # separator navy
+idle_fg = "#a0bedd"   # lighter slate — distinct from mem
+
+[[block]]
+block = "bluetooth"
+mac = "E4:58:BC:63:FA:B6"
+format = " $icon $name.str(max_w:5) {$percentage|}"
+[block.theme_overrides]
+idle_bg = "#0a1a38"   # split between sound and mem
+idle_fg = "#7a9cc9"
+
+[[block]]
+block = "battery"
+format = "$icon  $percentage {$time_remaining.dur(hms:true, min_unit:m) |}"
+full_format = "$icon"
+[block.theme_overrides]
+good_bg     = "#012a1a"   # deep green — echoes net good
+good_fg     = "#4ecba0"   # teal — ties to net palette
+warning_bg  = "#2a1f00"
+warning_fg  = "#c9a84c"
+critical_bg = "#6b1a1a"
+critical_fg = "#f4a261"
+idle_bg = "#011f4b"   # flush with bar bg
+
+[[block]]
+block = "time"
+interval = 5
+# timezone = "Arizona"
+# format = "$timestamp.datetime(f:'%a %b %d %R') "
+[block.format]
+full = "$timestamp.datetime(f:'%a %m-%d-%Y %R %Z', l:en_US) "
+short = "$timestamp.datetime(f:'%a %b %d %R') "
+[block.theme_overrides]
+idle_fg = "#ff992f"
+idle_bg = "#011f4b"   # flush with bar bg
+
+

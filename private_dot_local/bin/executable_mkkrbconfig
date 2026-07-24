@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+## 
+
+usage() {
+	echo 'Looks up ip via ldap and creates a krbconfig based on DC domain'
+	echo 'USAGE: $0 <IP> '
+	exit 1
+}
+
+[[ -z $1 ]] && usage
+
+
+ip="$1"
+if [[ "$ip" == *::* ]]; then
+	ldap_host="ldap://[$ip]"
+else
+	ldap_host="ldap://$ip"
+fi
+echo "$ldap_host"
+
+domain=$(ldapsearch -x -H $ldap_host -s base namingcontexts -b "" | awk -F'[=,]' \
+	'tolower($0) ~ /namingcontexts:/ {print $2"."$4;exit}')
+
+[[ $? -ne 0 ]] && echo 'ldapsearch failed' && exit 1
+
+realm=${domain^^}
+outfile="$domain.krb.conf"
+
+cat << EOF > $outfile
+[libdefaults]
+	dns_default_realm = $realm
+	dns_lookup_realm = true
+	dns_lookupkdc = true
+[realms]
+	 $realm = {
+		kdc = $ip:88
+		admin_server = $ip:749
+		default_domain = $domain
+	}
+[domain_realm]
+	$domain =  $realm
+	.$domain =  $realm
+
+EOF
+
+# cat << EOF | sed \
+# -e "s/{{REALM_PLACEHOLDER}}/$realm/g" \
+# -e "s/{{domain_placeholder}}/$domain/g" \
+# -e "s/{{ip_placeholder}}/$ip/g" > "$outfile"
+# [libdefaults]
+#     default_realm = {{REALM_PLACEHOLDER}}
+#     dns_lookup_realm = true
+#     dns_lookup_kdc = true
+#
+# [realms]
+#     {{REALM_PLACEHOLDER}} = {
+#         kdc = {{ip_placeholder}}:88
+#         admin_server = {{ip_placeholder}}:749
+#         default_domain = {{domain_placeholder}}
+#     }
+#
+# [domain_realm]
+#     {{domain_placeholder}} = {{REALM_PLACEHOLDER}}
+#     .{{domain_placeholder}} = {{REALM_PLACEHOLDER}}
+# EOF
+
+echo "[+] Domain: $domain @ $ip"
+echo '[+] Created custom_krb5.conf'
+echo '' 
+echo 'To use: '
+echo "export KRB5_CONFIG=\$PWD/$outfile"
+echo ''
+

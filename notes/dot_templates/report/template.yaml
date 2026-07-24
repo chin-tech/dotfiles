@@ -1,0 +1,35 @@
+layout: post
+title: "Inlanefreight Penetration Test"
+date: Fri Jun  6 09:40:01 PM HST 2025
+# List Format
+table_of_contents:
+    - Statement of Confidentiality
+    - Overview
+    - Engagement Contacts
+    - Executive Summary
+    - Network Pentest Summary:
+        - Walkthrough
+    - Internal Network Compromise:
+        - Walkthrough
+    - Remediation:
+        - Quickfix
+        - Mid-Term
+        - Long-Term
+    - Technical Findings Details
+    - Appendices:
+        - A - Findings Severities
+        - B - Exploited Hosts
+        - C - Compromised Users
+        - D - Alterations / Host Cleanup
+        - E - Etc.
+
+company_logo: ""
+company: Inlanefreight
+initial_creds: "_creds_"
+# List Format
+ip_addresses: 
+    - 10.10.11.69
+    - 10.10.11.70
+    - 10.10.11.71
+    - 10.10.11.72
+    - 10.10.11.73

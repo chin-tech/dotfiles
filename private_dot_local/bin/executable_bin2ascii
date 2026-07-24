@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+echo "$1" | perl -lape '$_=pack"(B8)*",@F'

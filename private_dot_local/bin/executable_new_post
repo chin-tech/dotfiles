@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+TEMPLATE_DIR="$HOME/notes/.templates"
+VALID_STYLES=("htb" "vl" "wargame" "blog")
+
+post_style=${1,,}
+post_title=${2}
+initial_creds=${3}
+
+usage() {
+   echo "new_post <post_style: [${VALID_STYLES[@]}] > <post_title> <initial_creds>"
+   exit 1
+}
+
+[[ -z $post_style ]] || [[ -z $post_title ]] && usage
+
+if ! grep -Eoq "${post_style}" <<< "${VALID_STYLES[@]}"; then
+   echo '[-] Invalid style!'
+   echo "Valid Styles: ${VALID_STYLES[@]}"
+   exit 1
+fi
+
+template="$TEMPLATE_DIR/$post_style/template.md"
+
+post_date=$(date '+%Y-%m-%d')
+new_post_title="${post_title// /-}_$post_date"
+# new_post_title="${new_post_title,,}"
+case "$post_style" in
+   "htb")
+      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/HTB/"
+      ;;
+   "vl")
+      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/VULNLAB/"
+      ;;
+   "wargame")
+      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/Wargames/"
+      ;;
+   *)
+      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/General/"
+      ;;
+esac
+
+
+out_file="${out_path}${new_post_title,,}.md"
+
+sed -e "s/_title_/${post_title}/g" -e "s/_date_/$post_date/g" -e "s/_creds_/${initial_creds}/" $template > "${out_file}"
+
+nvim "${out_file}"

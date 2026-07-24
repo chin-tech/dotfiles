@@ -1,0 +1,1 @@
+markdown_mmd+emoji+strikeout+fancy_lists+task_lists+implicit_figures+link_attributes+inline_notes+tex_math_single_backslash+simple_tables+grid_tables+multiline_tables+table_captions+yaml_metadata_block-blank_before_blockquote

@@ -1,0 +1,40 @@
+# Dev Stuff #
+gtk-single-instance = true
+## Themes ##
+# theme = Popping And Locking
+#theme = Ultra Violent
+# theme = Everforest Dark Hard
+theme = Catppuccin Macchiato 
+#theme = Horizon
+
+## Windows ##
+
+window-decoration = false
+background-opacity = 0.85
+
+## Fonts ##
+# Original Nicely Used font
+# font-family = "Liga Liberation Mono"
+# font-family = "Monaspace Neon NF" 
+# font-family = "0xProto Nerd Font Mono"
+font-family =  "Monaspace Krypton Var"
+font-size = 10
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
+font-feature = "ss04"
+font-feature = "ss05"
+font-feature = "ss06"
+font-feature = "ss07"
+font-feature = "ss08"
+font-feature = "ss09"
+font-feature = "ss10"
+font-feature = "liga"
+font-feature = "calt"
+
+##  Keybinds ##
+keybind = opt+g>r=reload_config
+app-notifications = no-clipboard-copy
+
+# Cursor
+cursor-opacity = 0.2

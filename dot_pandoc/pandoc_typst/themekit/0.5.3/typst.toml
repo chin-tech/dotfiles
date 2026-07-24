@@ -1,0 +1,7 @@
+[package]
+name = "themekit"
+version = "0.5.3"
+entrypoint = "lib.typst"
+authors = ["LIZHUOQI"]
+license = "Unlicense"
+description = "An opinioned pandoc typst template"

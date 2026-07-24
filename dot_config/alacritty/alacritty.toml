@@ -1,0 +1,86 @@
+import = ["~/.config/alacritty/themes/rose-pine.toml"]
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+
+[window]
+opacity = 0.75
+decorations = "Full"
+decorations_theme_variant = "Dark"
+startup_mode = "Maximized"
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[font]
+size = 7.4
+offset = {x = 0, y = 0}
+
+
+[font.bold]
+# Source Code Pro 
+family = "Liberation Mono"#  "ComicCode"
+style = "Bold"
+
+[font.italic]
+family = "Liberation Mono"#  "ComicCode"
+style = "Italic"
+
+[font.normal]
+family = "Liberation Mono"#  "ComicCode"
+style = "Regular"
+
+
+[env]
+TERM = "xterm-256color"
+
+
+[mouse]
+hide_when_typing = true
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+
+# [colors.primary]
+# background = "0x37383b"
+# foreground = "0xD9E0EE"
+#
+#
+#
+# [[colors.indexed_colors]]
+# color = "0xF8BD96"
+# index = 16
+#
+# [[colors.indexed_colors]]
+# color = "0xF5E0DC"
+# index = 17
+#
+# [colors.bright]
+# black = "0x988BA2"
+# blue = "0x96CDFB"
+# cyan = "0x89DCEB"
+# green = "#3abc95"
+# magenta = "#4f02a0"
+# red = "0xF28FAD"
+# white = "0xD9E0EE"
+# yellow = "0xFAE3B0"
+#
+# [colors.cursor]
+# cursor = "0xF5E0DC"
+# text = "0x1E1D2F"
+#
+# [colors.normal]
+# black = "0x6E6C7E"
+# blue = "0x81a9d9"
+# cyan = "0x89DCEB"
+# green = "0x8fbc8f"
+# magenta = "0xF5C2E7"
+# red = "0xF28FAD"
+# white = "0xD9E0EE"
+# yellow = "0xFAE3B0"
+
+[window.padding]
+x = 4
+y = 4

@@ -1,0 +1,155 @@
+#import "@local/themekit:0.5.3": doc_dark_ayu_mirage as conf
+
+// ref: https://imaginarytext.ca/posts/2024/pandoc-typst-tutorial/
+
+// Pandoc/markdown HR treatment
+// display as a blank white section break
+// I bet you can figure out how to make it a different colour!
+
+#let horizontalrule = [
+
+  #block(spacing: 1em, inset: (5pt))[
+    // #v(1pt)
+    #line(start: ( 2 * 12pt,0%), end: (100%,0%), stroke: 1pt + rgb("#bfbdb6"))
+    // #v(1pt) 
+  ]
+
+  #linebreak()
+  #v(-1em)
+]
+
+#show figure.where(
+  kind: table
+): set figure.caption(position: $if(table-caption-position)$$table-caption-position$$else$top$endif$)
+
+#show figure.where(
+  kind: image
+): set figure.caption(position: $if(figure-caption-position)$$figure-caption-position$$else$bottom$endif$)
+
+$if(smartquote)$
+$else$
+#set smartquote(enabled: false)
+
+$endif$
+$for(header-includes)$
+$header-includes$
+
+$endfor$
+
+#show: doc => conf(
+$if(title)$
+  title: [$title$],
+$endif$
+$if(subtitle)$
+  subtitle: [$subtitle$],
+$endif$
+// authors
+$if(author)$
+  authors: (
+$for(author)$
+$if(author.name)$
+    ( name: [$author.name$],
+      affiliation: [$author.affiliation$],
+      email: [$author.email$] ),
+$else$
+    ( name: [$author$],
+      affiliation: "",
+      email: "" ),
+$endif$
+$endfor$
+    ),
+$endif$
+// keywords, date, abstract
+$if(keywords)$
+  keywords: ($for(keywords)$"$keywords$",$endfor$),
+$endif$
+$if(date)$
+  date: [$date$],
+$endif$
+$if(lang)$
+  lang: "$lang$",
+$endif$
+$if(region)$
+  region: "$region$",
+$endif$
+$if(abstract)$
+  abstract: [$abstract$],
+$endif$
+$if(papersize)$
+  paper: "$papersize$",
+$endif$
+$if(margin)$
+  margin: ($for(margin/pairs)$$margin.key$: $margin.value$,$endfor$),
+$endif$
+$if(pagesize)$
+  pagesize: ($for(pagesize/pairs)$$pagesize.key$: $pagesize.value$,$endfor$),
+$endif$
+$if(mainfont)$
+  font: (
+$for(mainfont)$
+    "$mainfont$",
+$endfor$
+    ),
+$endif$
+$if(fontsize)$
+  fontsize: $fontsize$,
+$endif$
+$if(monofont)$
+  monofont: (
+$for(monofont)$
+    "$monofont$",
+$endfor$
+    ),
+$endif$
+$if(mathfont)$
+  mathfont: (
+$for(mathfont)$
+    "$mathfont$",
+$endfor$
+    ),
+$endif$
+  sectionnumbering: $if(section-numbering)$"$section-numbering$"$else$"1.1.1.1.1.1.1.1.1. "$endif$,
+  pagenumbering: $if(page-numbering)$"$page-numbering$"$else$none$endif$,
+  figurenumberingwithheadingnumbers: $if(figure.numbering.heading_numbers)$true$else$if "$figure.numbering.heading_numbers$" in ("none", "disable") { false }$endif$,
+$if(figure.supplement)$
+  figuresupplement: if "$figure.supplement$" in ("disable", "none") { none } else { auto },
+$endif$
+  cols: $if(columns)$$columns$$else$1$endif$,
+  doc,
+)
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+// outline will hiden when page height is auto
+#outline(
+$if(toc-title)$
+  title: if "$toc-title$" == "none" { none } else { "$toc-title$" },
+$else$
+  title: auto,
+$endif$
+  depth: $toc-depth$
+);
+$endif$
+
+$body$
+
+$if(citations)$
+$if(csl)$
+
+#set bibliography(style: "$csl$")
+$elseif(bibliographystyle)$
+
+#set bibliography(style: "$bibliographystyle$")
+$endif$
+$if(bibliography)$
+
+#bibliography($for(bibliography)$"$bibliography$"$sep$,$endfor$)
+$endif$
+$endif$
+$for(include-after)$
+
+$include-after$
+$endfor$

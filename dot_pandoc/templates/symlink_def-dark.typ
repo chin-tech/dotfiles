@@ -1,0 +1,1 @@
+dark.ayu-dark.typ

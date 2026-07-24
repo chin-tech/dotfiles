@@ -1,0 +1,41 @@
+// 文档模板中的字体选项
+
+// emoji font: "Apple Color Emoji"(macos), "Segoe UI Emoji"(windows), "Noto Color Emoji"(not macos/windows)
+
+// // for windows
+// // fonts for emoji
+// #let emmoji_fonts=("Segoe UI Emoji", "Noto Color Emoji")
+// #let mainfont = ("Segoe UI",)
+// #let monofont = ("Consolas",)
+
+// for macos\
+// fonts for emoji
+#let emmoji_fonts=("Apple Color Emoji", "Noto Color Emoji")
+#let mainfont = ("SF Pro Text",)
+#let monofont = ("SF Mono",)
+
+// // for linux
+// // fonts for emoji
+// #let emmoji_fonts=("Noto Color Emoji")
+// #let mainfont = ("Menlo",)
+// #let monofont = ("DejaVu Sans Mono")
+
+
+
+// fonts defined
+#let fonts=(
+    normal: (
+        // typst 0.12: typst 
+        // normal font for whole doc
+        font: (name: ("LXGW WenKai GB", ..mainfont, "Libertinus Serif", ..emmoji_fonts))
+    ),
+    codeblock: (
+        // mono font for code snippets
+        font: (name: ("LXGW WenKai Mono GB", ..monofont, "DejaVu Sans Mono", ..emmoji_fonts)),
+    ),
+    math: (
+        // typst built-in math font, New Computer Modern Math
+        font: (name: ("New Computer Modern Math", "LXGW WenKai Mono GB", ..emmoji_fonts)),
+    )
+    
+)

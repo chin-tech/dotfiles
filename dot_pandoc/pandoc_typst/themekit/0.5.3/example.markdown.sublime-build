@@ -1,0 +1,61 @@
+// 将本文件添加到 sublime text users 目录下
+{
+	"selector": "text.html.markdown",
+	"variants": [
+		{
+			"name": "md to pdf (by typst)",
+			"working_dir": "$file_path",
+			"env": {
+				// 修改为 themekit 所在目录, where is themekit, or `dirname themekit`
+				"THEMEKIT_DIR": "DIRECTORY/TO/THEMEKIT",
+				"PANDOC_MD_ARGS": "-f markdown_mmd+emoji+strikeout+fancy_lists+task_lists+implicit_figures+link_attributes+inline_notes+tex_math_single_backslash+simple_tables+grid_tables+multiline_tables+table_captions+yaml_metadata_block-blank_before_blockquote",
+				"PANDOC_TARGET": " -t pdf --pdf-engine typst ",
+				"PANDOC_TEMPLATE": "themekit/0.5.3/pandoc/dark.catppuccin-frappe.typst"
+			},
+			// shell_cmd 不断断行
+			"shell_cmd": "cat \"$file\" | pandoc \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$THEMEKIT_DIR/\\$PANDOC_TEMPLATE -o $file_path/$file_base_name.pdf",
+			// "shell_cmd": "multimarkdown -tmmd \"$file\" | pandoc  \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$TYPST_PATH/\\$PANDOC_TEMPLATE -o $file_path/$file_base_name.pdf ; open $file_base_name.pdf",
+		},
+		{
+			"name": "md to pdf (by typst + phone page size)",
+			"working_dir": "$file_path",
+			"env": {
+				// 修改为 themekit 所在目录, where is themekit, or `dirname themekit`
+				"THEMEKIT_DIR": "DIRECTORY/TO/THEMEKIT",
+				"PANDOC_MD_ARGS": "-f markdown_mmd+emoji+strikeout+fancy_lists+task_lists+implicit_figures+link_attributes+inline_notes+tex_math_single_backslash+simple_tables+grid_tables+multiline_tables+table_captions+yaml_metadata_block-blank_before_blockquote",
+				"PANDOC_TARGET": " -t pdf --pdf-engine typst ",
+				"PANDOC_TEMPLATE": "themekit/0.5.3/pandoc/phone.dark.catppuccin-frappe.typst"
+			},
+			// shell_cmd 不断断行
+			"shell_cmd": "cat \"$file\" | pandoc  \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$THEMEKIT_DIR/\\$PANDOC_TEMPLATE -o $file_path/$file_base_name.pdf",
+			// "shell_cmd": "[ ! -d themes ] && ln -s \\$TYPST_PATH/themes ; multimarkdown -tmmd \"$file\" | pandoc  \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$TYPST_PATH/\\$PANDOC_TEMPLATE -o $file_path/$file_base_name.pdf ; [ -L themes ] && rm themes; open $file_base_name.pdf",
+		},
+		{
+			"name": "md to png (by pandoc+typst with phone page size)",
+			"working_dir": "$file_path",
+			"env": {
+				// 修改为 themekit 所在目录, where is themekit, or `dirname themekit`
+				"THEMEKIT_DIR": "DIRECTORY/TO/THEMEKIT",
+				// "PANDOC_MD_ARGS": "-f gfm+yaml_metadata_block+definition_lists+implicit_figures+hard_line_breaks+fancy_lists+task_lists+emoji",
+				"PANDOC_MD_ARGS": "-f markdown_mmd+emoji+strikeout+fancy_lists+task_lists+implicit_figures+link_attributes+inline_notes+tex_math_single_backslash+simple_tables+grid_tables+multiline_tables+table_captions+yaml_metadata_block-blank_before_blockquote",
+				"PANDOC_TARGET": " -t typst ",
+				"PANDOC_TEMPLATE": "themekit/0.5.3/pandoc/phone.dark.catppuccin-frappe.typst"
+			},
+			// shell_cmd 不断断行
+			"shell_cmd": "cat \"$file\" | pandoc  \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$THEMEKIT_DIR/\\$PANDOC_TEMPLATE | typst compile --ppi 200 - $file_path/$file_base_name-{0p}-of-{t}.png ",
+		},
+		{
+			"name": "md to typst",
+			"working_dir": "$file_path",
+			"env": {
+				// 修改为 themekit 所在目录, where is themekit, or `dirname themekit`
+				"THEMEKIT_DIR": "DIRECTORY/TO/THEMEKIT",
+				"PANDOC_MD_ARGS": "-f markdown_mmd+emoji+strikeout+fancy_lists+task_lists+implicit_figures+link_attributes+inline_notes+tex_math_single_backslash+simple_tables+grid_tables+multiline_tables+table_captions+yaml_metadata_block-blank_before_blockquote",
+				"PANDOC_TARGET": " -t typst ",
+				"PANDOC_TEMPLATE": "themekit/0.5.3/pandoc/phone.dark.catppuccin-frappe.typst"
+			},
+			// shell_cmd 不断断行
+			"shell_cmd": "cat \"$file\" | pandoc  \\$PANDOC_MD_ARGS \\$PANDOC_TARGET --template=\\$THEMEKIT_DIR/\\$PANDOC_TEMPLATE -o $file_path/$file_base_name.typst",
+		},
+	]
+}

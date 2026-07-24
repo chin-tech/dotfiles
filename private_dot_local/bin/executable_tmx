@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+#
+#
+#
+#
+declare -a DEFAULT_WINDOWS=("Coding" "Scratch" "Extra")
+declare -a HACKTHEBOX_WINDOWS=("Primary" "Research" "Connection/Other")
+DIR_PATH="~/Programming"
+HTB_DIRS="~/Programming/HackTheBox/"
+SESSION_NAME=${1:-"Main"}
+WINDOWS=(${2:-${DEFAULT_WINDOWS[@]}})
+shopt -s nocasematch
+if [[ ${SESSION_NAME} =~ "HTB" ]]; then
+    WINDOWS=("Primary" "Research" "Connection/Other")
+    DIR_PATH=$HTB_DIRS
+fi
+LENGTH="${#WINDOWS[@]}"
+
+tmux_on=$(pgrep tmux)
+
+## Tmux layouts ##
+# The way tmux works is on creation of a split, it centers to the new pane. 
+#
+#
+
+# This is default of 1, but we're chaning it in our tmux config
+STARTING_INDEX=1
+
+function four_x_four_layout() {
+    local tgt_session="${1}"
+    local window_id="${2}"
+    local window_name="${3}"
+    local tgt_dir="${4}"
+    local cmd="${5}"
+    tmux new-window -t "${tgt_session}":"${window_id}" -n "${window_name}" -c "${tgt_dir}"
+    tmux split-window -v -t "${tgt_session}:${window_id}"
+    tmux split-window -h -t "${tgt_session}:${window_id}.1"
+    tmux split-window -h -t "${tgt_session}:${window_id}.0"
+}
+
+
+function new_session() {
+    local name="${1}"
+    local window_path="${2}"
+    local split="${4}"
+    local length="${#WINDOWS[@]}"
+    echo "[INFO] WINDOWS = ${WINDOWS}"
+    echo "[INFO] LENGTH = ${length}"
+    tmux new-session -ds "${name}" -n "${WINDOWS[0]}" -c "${window_path}"
+    if [[ ! -z split ]]; then
+        four_x_four_layout "${name}" 1 "${WINDOW[0]}" -c "${window_path}" 
+    fi
+    for ((i=1; i < $length; i++)) do
+        tmux new-window -t "${name}":$((1 + i )) -n "${WINDOWS[$i]}" -c "${window_path}"
+        tmux split-window -v -t "${name}:$((1 + i))"
+    done
+}
+
+
+if [[ -z $tmux_on ]]; then
+    echo "[INFO] Creating New TMUX Instance"
+    new_session "${SESSION_NAME}"  ${DIR_PATH}
+    tmux attach-session -t "${SESSION_NAME}":$STARTING_INDEX
+elif ! tmux has-session -t=${SESSION_NAME} 2>/dev/null; then
+    echo "[INFO] TMUX SESSION FOUND"
+    echo "[INFO] Creating New Session....."
+    new_session "${SESSION_NAME}"  "${DIR_PATH}" true
+    tmux switch-client -t $SESSION_NAME:$STARTING_INDEX
+fi
+
+
+
+# if [[ -z $tmux_on ]]; then
+#     echo "Creating new instance -> $SESSION_NAME"
+#     tmux new-session -ds $SESSION_NAME -n ${WINDOWS[0]} -c ~/Programming
+#     tmux split-window -v 
+#     for ((i=1; i < $LENGTH; i++)); do 
+#         tmux new-window -t "${SESSION_NAME}":$i -n "${WINDOWS[$i]}" -c ~
+#         tmux split-window -v -t "${SESSION_NAME}:$i" 
+#
+#     done
+#     tmux attach-session -t "${SESSION_NAME}":0
+# elif ! tmux has-session -t=${SESSION_NAME} 2> /dev/null; then
+#     echo "Creating new session -> $SESSION_NAME"
+#     echo "Creating Windows: -> ${WINDOWS}"
+#     tmux new-session -ds ${SESSION_NAME} -n ${WINDOWS[0]} -c ~/Programming/HackTheBox/ 
+#     sleep 0.1
+#     tmux split-window -h 
+#     tmux split-window -v  
+#     for ((i=1; i < $LENGTH; i++)); do 
+#         tmux new-window -t "${SESSION_NAME}":$i -n "${WINDOWS[$i]}" -c ~
+#         tmux split-window -v -t "${SESSION_NAME}:${i}" 
+#
+#     done
+#     # for i in $(seq 1 ${#WINDOWS[@]}); do
+#     #     echo ${WINDOWS[$i]}
+#     #     tmux new-window -t "${SESSION_NAME}":$i -n "${WINDOWS[$i]}" 
+#     # done
+#     tmux switch-client -t $SESSION_NAME:0
+#
+# fi
+#
