@@ -1,0 +1,10 @@
+Include config.d/*
+
+Host *
+   EnableEscapeCommandline yes
+   ForwardAgent yes
+   GSSAPIAuthentication yes
+   GSSAPIDelegateCredentials yes
+   IdentityFile ~/.ssh/sadkey
+
+
