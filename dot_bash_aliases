@@ -39,6 +39,77 @@ alias tmuxcfg="nvim ~/.config/tmux/tmux.conf"
 alias aliascfg="nvim ~/.bash_aliases && source ~/.bash_aliases"
 alias ghostcfg="nvim ~/.config/ghostty/config"
 alias i3statuscfg="nvim ~/.config/i3status-rust/config.toml"
+function ecfg() {
+    local target="$1"
+    local file=""
+    local reload_cmd=""
+    local dirchanged=false
+
+    # 1. Resolve file path and optional reload action
+    case "$target" in
+        v*)
+            # Note: We open init.lua directly so chezmoi can track the exact file path
+            pushd "$HOME/.config/nvim" 2>/dev/null
+            file="$HOME/.config/nvim/init.lua"
+            dirchanged=true
+            ;;
+        b*)
+            file="$HOME/.bashrc"
+            reload_cmd="source $file"
+            ;;
+        a*)
+            file="$HOME/.bash_aliases"
+            reload_cmd="source $file"
+            ;;
+        g*)
+            file="$HOME/.config/ghostty/config"
+            ;;
+        t*)
+            file="$HOME/.config/tmux/tmux.conf"
+            ;;
+        i3s*)
+            file="$HOME/.config/i3status-rust/config.toml"
+            ;;
+        i3*)
+            file="$HOME/.config/i3/config"
+            ;;
+        *)
+            echo "Usage: ecfg [v(im) | b(ash) | a(lias) | g(hostty) | t(mux) | i3 | i3s(tatus)]"
+            return 1
+            ;;
+    esac
+
+    # Ensure target exists
+    if [[ ! -f "$file" ]]; then
+        echo "Error: $file does not exist."
+        return 1
+    fi
+
+    local mtime_before
+    mtime_before=$(stat -c %Y "$file" 2>/dev/null || stat -f %m "$file")
+
+    $EDITOR "$file"
+    if $dirchanged; then
+       popd > /dev/null
+    fi
+
+    # 4. Record timestamp after editing & check for changes
+    local mtime_after
+    mtime_after=$(stat -c %Y "$file" 2>/dev/null || stat -f %m "$file")
+
+    if [[ "$mtime_before" != "$mtime_after" ]]; then
+        chezmoi re-add "$file"
+        if $?; then
+           echo "[+] Updated"
+         else
+            echo "[!] Chezmoi Failure!"
+        fi
+        # Execute reload command if one was set (like sourcing .bashrc)
+        if [[ -n "$reload_cmd" ]]; then
+            eval "$reload_cmd"
+        fi
+    fi
+}
 
 #Weather
 alias weather="curl wttr.in"
