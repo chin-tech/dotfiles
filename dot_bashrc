@@ -300,7 +300,6 @@ _source_files=(
     '/opt/google-cloud-cli/path.bash.inc'
     '/opt/google-cloud-cli/completion.bash.inc'
     '/usr/bin/aws_completer'
-    "$HOME/.bashrc"
     "$HOME/.bash_aliases"
     "$HOME/.bash_github"
     "$HOME/.x"
