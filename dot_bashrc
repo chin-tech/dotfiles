@@ -304,18 +304,17 @@ _source_files=(
     "$HOME/.bash_aliases"
     "$HOME/.bash_github"
     "$HOME/.x"
-    "$lesscolors"
+    "${lesscolors:-}"
 )
 
 for f in "${_source_files[@]}"; do
     if [[ $f =~ aws ]]; then
-	complete -C $f aws
+	[[ -x $f ]] && complete -C $f aws
     else
 	[ -f $f ] && . $f
     fi
 done
-unset lesscolors
-unset _source_files
+unset _source_files lesscolors
 
 # [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 # [ -f ~/.bash_github ] && . ~/.bash_github
