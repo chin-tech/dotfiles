@@ -36,10 +36,6 @@ fi
 
 
 
-### JQ COLORS ###
-#    1 ; 2    ; 3  ; 4     ;   5   ;  6   ;   7   ;  8   
-#  null;false ;true;numbers;strings;arrays;objects;object-keys
-export JQ_COLORS="0;90:0;39:0;39:0;39:0;34:1;39:1;39:1;34"
 
 
 ### Terminal Prompts ###
@@ -157,23 +153,11 @@ fi
 # Pretty colors for the `less` utility
 lesscolors=$HOME/.config/.LESS_TERMCAP
 
-[[ -f $lesscolors ]] && . $lesscolors
-unset lesscolors
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# function _ADD_TO_PATH() {
-#     if [[ ":$PATH:" != *"$1" ]]; then
-# 	if [[ $2 =~ 'prepend' ]];then
-# 	    export PATH=$1:$PATH
-# 	else
-# 	    export PATH=$PATH:$1
-# 	fi
-#     fi
-#
-# }
 
 _ADD_TO_PATH() {
     local target_path="${1/#\~/$HOME}"
@@ -225,24 +209,15 @@ ANDROID_PATHS=(
 
 for path in "${PATHS_TO_ADD[@]}"; do _ADD_TO_PATH $path ; done
 for path in "${ANDROID_PATHS[@]}"; do _ADD_TO_PATH "${ANDROID_HOME}${path}" ; done
+
+
+### JQ COLORS ###
+#    1 ; 2    ; 3  ; 4     ;   5   ;  6   ;   7   ;  8   
+#  null;false ;true;numbers;strings;arrays;objects;object-keys
+export JQ_COLORS="0;90:0;39:0;39:0;39:0;34:1;39:1;39:1;34"
+
 export PATH
-
 export CHROME_EXECUTABLE=$(which chromium)
-#export PATH=$PATH:$(echo ${PATHS_TO_ADD[*]} | tr ' ' ':')
-#export PATH=$PATH:$(echo $ANDROID_HOME/${ANDROID_PATHS[*]} | tr ' ' ':')
-# export ANDROID_HOME=/opt/mobile_app_dev/android
-# bun
-# export BUN_INSTALL="$HOME/.bun"
-# export PATH="$BUN_INSTALL/bin:$PATH"
-
-## Google Cloud CLI ##
-# The next line updates PATH for the Google Cloud CLI and completion for CLI arguments
-[ -f '/opt/google-cloud-cli/path.bash.inc' ] && . /opt/google-cloud-cli/path.bash.inc
-[ -f '/opt/google-cloud-cli/completion.bash.inc' ] && . /opt/google-cloud-cli/completion.bash.inc
-
-## AWS CLI ##
-[ -f '/usr/bin/aws_completer' ] && complete -C '/usr/bin/aws_completer' aws
-
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 123)
 export LESS_TERMCAP_md=$(tput bold; tput setaf 147)
 export LESS_TERMCAP_me=$(tput sgr0)
@@ -261,10 +236,6 @@ export GROFF_NO_SGR=1
 export MANPAGER='less'
 # export MANPAGER='nvim +Man!'
 export LESS="--RAW-CONTROL-CHARS"
-
-
-
-
 
 
 ### Functions ####
@@ -322,24 +293,51 @@ function btc() {
 }
 
 
-# #HacktheBox
-# function htba() {
-#     openvpn ~/.hackthebox/academy-regular.ovpn
-# }
+local _source_files -a
+_source_files=(
+    "/usr/share/fzf/completion.bash"
+    "/usr/share/fzf/key-bindings.bash"
+    "/usr/share/bash-completion/bash_completion"
+    '/opt/google-cloud-cli/path.bash.inc'
+    '/opt/google-cloud-cli/completion.bash.inc'
+    '/usr/bin/aws_completer'
+    "$HOME/.bashrc"
+    "$HOME/.bash_aliases"
+    "$HOME/.bash_github"
+    "$HOME/.x"
+    "$lesscolors"
+)
+
+for f in "${_source_files[@]}"; do
+    if [[ $f =~ aws ]]; then
+	complete -C $f aws
+    else
+	[ -f $f ] && . $f
+    fi
+unset lesscolors
+
+# [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+# [ -f ~/.bash_github ] && . ~/.bash_github
 #
-# function htbl() {
-#     openvpn ~/.hackthebox/lab-regular.ovpn
-# }
-
-## FZF Bindings ##
-[ -f /usr/share/fzf/completion.bash ] && . /usr/share/fzf/completion.bash
-[ -f /usr/share/fzf/key-bindings.bash ] && .  /usr/share/fzf/key-bindings.bash
-
-## Bash Completion
-[ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-
-## Source local configs ##
-
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.bash_github ] && . ~/.bash_github
-# export PATH="$HOME/.npm-global/bin:$PATH"
+# ## FZF Bindings ##
+# [ -f /usr/share/fzf/completion.bash ] && . /usr/share/fzf/completion.bash
+# [ -f /usr/share/fzf/key-bindings.bash ] && .  /usr/share/fzf/key-bindings.bash
+#
+# ## Bash Completion
+# [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
+#
+# ## Sourcing ##
+#
+# [[ -f $lesscolors ]] && . $lesscolors
+# unset lesscolors
+# ## Google Cloud CLI ##
+# # The next line updates PATH for the Google Cloud CLI and completion for CLI arguments
+# [ -f '/opt/google-cloud-cli/path.bash.inc' ] && . /opt/google-cloud-cli/path.bash.inc
+# [ -f '/opt/google-cloud-cli/completion.bash.inc' ] && . /opt/google-cloud-cli/completion.bash.inc
+# ## AWS CLI ##
+# [ -f '/usr/bin/aws_completer' ] && complete -C '/usr/bin/aws_completer' aws
+#  # Local Configs
+# [ -f ~/.x ] && . ~/.x
+# [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+# [ -f ~/.bash_github ] && . ~/.bash_github
+# # export PATH="$HOME/.npm-global/bin:$PATH"
