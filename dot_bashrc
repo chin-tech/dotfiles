@@ -313,6 +313,7 @@ for f in "${_source_files[@]}"; do
     else
 	[ -f $f ] && . $f
     fi
+done
 unset lesscolors
 unset _source_files
 
