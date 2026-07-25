@@ -1,48 +1,54 @@
 #!/usr/bin/env bash
 
+declare POST_TITLE
+declare POST_DATE
+declare POST_TYPE
+declare POST_ASSET_PATH
 TEMPLATE_DIR="$HOME/notes/.templates"
-VALID_STYLES=("htb" "vl" "wargame" "blog")
+VALID_POST_TYPES=("htb" "vulnlab" "wargame" "blog" "other")
 
-post_style=${1,,}
+post_type=${1,,}
 post_title=${2}
-initial_creds=${3}
+template="$TEMPLATE_DIR/blog-template.md"
+blog_dir="$HOME/notes/chin-tech.github.io/src/content/blog/"
+
 
 usage() {
-   echo "new_post <post_style: [${VALID_STYLES[@]}] > <post_title> <initial_creds>"
+   echo "new_post <post_style: [${VALID_POST_TYPES[@]}] > <post_title> "
    exit 1
 }
 
-[[ -z $post_style ]] || [[ -z $post_title ]] && usage
+[[ -z $post_type ]] || [[ -z $post_title ]] && usage
 
-if ! grep -Eoq "${post_style}" <<< "${VALID_STYLES[@]}"; then
-   echo '[-] Invalid style!'
-   echo "Valid Styles: ${VALID_STYLES[@]}"
+for p in "${VALID_POST_TYPES[@]}"; do
+   if [[ $post_type =~ $p ]]; then
+      POST_TYPE=$p
+   fi
+done
+
+if [[ -z $POST_TYPE ]]; then
+   echo '[!] Invalid Post Type'
+   echo "Valid Styles: ${VALID_POST_TYPES[@]}"
    exit 1
 fi
 
-template="$TEMPLATE_DIR/$post_style/template.md"
-
-post_date=$(date '+%Y-%m-%d')
-new_post_title="${post_title// /-}_$post_date"
-# new_post_title="${new_post_title,,}"
-case "$post_style" in
-   "htb")
-      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/HTB/"
-      ;;
-   "vl")
-      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/VULNLAB/"
-      ;;
-   "wargame")
-      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/Wargames/"
-      ;;
-   *)
-      out_path="${HOME}/notes/chin-tech.github.io/src/content/blog/General/"
-      ;;
+case "$POST_TYPE" in
+   "htb"    ) out_path="$blog_dir/HackTheBox"     ;;
+   "vulnlab") out_path="$blog_dir/Vulnlab" ;;
+   "wargame") out_path="$blog_dir/Wargames";;
+   *        ) out_path="$blog_dir/General" ;;
 esac
 
 
-out_file="${out_path}${new_post_title,,}.md"
 
-sed -e "s/_title_/${post_title}/g" -e "s/_date_/$post_date/g" -e "s/_creds_/${initial_creds}/" $template > "${out_file}"
+export POST_TITLE="${post_title// /-}"
+export POST_DATE=$(date '+%Y-%m-%d')
+export POST_ASSET_PATH="${POST_TYPE}-${POST_TITLE@L}"
+export POST_TYPE
 
+file_name="${post_title// /-}_$POST_DATE"
+out_path=$blog_dir
+out_file="${out_path}/${file_name,,}.md"
+
+envsubst '$POST_TITLE $POST_DATE $POST_ASSET_PATH $POST_TYPE' < "$template" > "$out_file"
 nvim "${out_file}"
