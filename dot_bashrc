@@ -311,7 +311,7 @@ for f in "${_source_files[@]}"; do
     if [[ $f =~ aws ]]; then
 	[[ -x $f ]] && complete -C $f aws
     else
-	[ -f $f ] && . $f
+	[[ -f $f ]] && . $f
     fi
 done
 unset _source_files lesscolors
