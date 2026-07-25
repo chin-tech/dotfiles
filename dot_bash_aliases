@@ -99,7 +99,7 @@ function ecfg() {
 
     if [[ "$mtime_before" != "$mtime_after" ]]; then
         chezmoi re-add "$file"
-        if $?; then
+        if [[ $? -eq 0 ]]; then
            echo "[+] Updated"
          else
             echo "[!] Chezmoi Failure!"
