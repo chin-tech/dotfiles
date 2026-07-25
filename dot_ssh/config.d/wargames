@@ -1,0 +1,19 @@
+## Wargames & Labs
+Host frizzdc 
+   HostName frizzdc.frizz.htb
+
+Host bandit behemoth krypton
+   HostName %h.labs.overthewire.org
+
+Host bandit
+   port 2220
+Host behemoth
+   port 2221
+Host krypton
+   port 2231
+
+Host century cyborg groot
+   HostName %h.underthewire.tech
+   port 22
+   RequestTTY no
+

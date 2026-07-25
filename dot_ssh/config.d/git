@@ -1,0 +1,20 @@
+Host github.com gp
+   HostName github.com
+   User git
+   IdentityFile ~/.ssh/gh-p
+   IdentitiesOnly yes
+
+Host gc
+   HostName github.com
+   User git
+   IdentityFile ~/.ssh/gh-c
+   IdentitiesOnly yes
+
+
+Host codeberg.org
+   User git
+   IdentityFile ~/.ssh/cb-c
+
+Host codeberg.org
+   User chin-tech
+   IdentityFile ~/.ssh/cb-c

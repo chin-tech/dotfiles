@@ -1,0 +1,52 @@
+Host cw1
+   user Administrator
+   HostName 10.0.0.60
+
+Host proxmox
+   Hostname 10.0.0.100
+   user root
+
+Host dragon
+   Hostname 10.0.0.15
+   user root
+
+
+Host davx
+   Hostname 10.0.0.35
+   user root
+
+
+Host media
+   Hostname 10.0.0.112
+   user root
+
+Host cam1
+   Hostname cam-cinna-1
+   user root
+
+
+Host cam2
+   Hostname cam-cinna-2
+   user root
+
+
+Host pi
+   Hostname pi.local
+   port 22
+   User phaze
+   IdentityFile ~/.ssh/pi_ed25519
+
+Host ha
+   Hostname 10.0.0.55
+   port 22
+   user root
+
+Host chin-net
+   Hostname 10.0.0.1
+   port 22
+   user root
+
+Host 10.0.0.* ha davx media cam1 cam2 cw1 proxmox dragon chin-net
+   IdentityFile ~/.ssh/chin.local
+   IdentitiesOnly yes
+
