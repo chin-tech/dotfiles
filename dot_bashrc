@@ -293,7 +293,6 @@ function btc() {
 }
 
 
-local _source_files -a
 _source_files=(
     "/usr/share/fzf/completion.bash"
     "/usr/share/fzf/key-bindings.bash"
@@ -315,6 +314,7 @@ for f in "${_source_files[@]}"; do
 	[ -f $f ] && . $f
     fi
 unset lesscolors
+unset _source_files
 
 # [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 # [ -f ~/.bash_github ] && . ~/.bash_github
