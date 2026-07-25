@@ -99,11 +99,6 @@ function ecfg() {
 
     if [[ "$mtime_before" != "$mtime_after" ]]; then
         chezmoi re-add "$file"
-        if [[ $? -eq 0 ]]; then
-           echo "[+] Updated"
-         else
-            echo "[!] Chezmoi Failure!"
-        fi
         # Execute reload command if one was set (like sourcing .bashrc)
         if [[ -n "$reload_cmd" ]]; then
             eval "$reload_cmd"
