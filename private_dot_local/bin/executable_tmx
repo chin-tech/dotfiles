@@ -5,14 +5,14 @@
 #
 #
 declare -a DEFAULT_WINDOWS=("Coding" "Scratch" "Extra")
-declare -a HACKTHEBOX_WINDOWS=("Primary" "Research" "Connection/Other")
+declare -a HACKTHEBOX_WINDOWS=("Main" "Research" "Other")
 DIR_PATH="~/Programming"
 HTB_DIRS="~/Programming/HackTheBox/"
 SESSION_NAME=${1:-"Main"}
 WINDOWS=(${2:-${DEFAULT_WINDOWS[@]}})
 shopt -s nocasematch
 if [[ ${SESSION_NAME} =~ "HTB" ]]; then
-    WINDOWS=("Primary" "Research" "Connection/Other")
+    WINDOWS=("Main" "Research" "Other")
     DIR_PATH=$HTB_DIRS
 fi
 LENGTH="${#WINDOWS[@]}"
