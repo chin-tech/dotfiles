@@ -28,6 +28,7 @@ exec --no-startup-id xset dpms 1800 1800 1800
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id bt-agent --capability=NoInputNoOutput
 
 
 ## Monitors And Background
