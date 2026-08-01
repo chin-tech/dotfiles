@@ -10,6 +10,8 @@ theme = Catppuccin Macchiato
 ## Windows ##
 
 window-decoration = false
+window-padding-y = 0
+window-padding-balance = false
 background-opacity = 0.85
 
 ## Fonts ##
