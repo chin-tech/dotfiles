@@ -5,6 +5,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Options --
+vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.opt.relativenumber = true -- NOTE: Relative Numbers
 vim.wo.number = true --NOTE:  Default numberline
