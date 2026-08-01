@@ -286,9 +286,11 @@ function btc() {
     local name="{$1-}"
     # [[ "$name" =~ "buds" ]] && bluetoothctl connect AC:3E:B1:84:35:BB  ## ear_buds
     #E4:58:BC:63:FA:B6
+    local BOSE="E4:58:BC:63:FA:B6"
+    local BUDS="14:22:3B:D9:B8:DF"
     [[ "$name" =~ "buds" ]] && bluetoothctl connect 14:22:3B:D9:B8:DF ## old/new buds
     # [[ "$name" =~ "bose" ]] && bluetoothctl connect 2C:41:A1:2C:6A:B1 ## bose_soundlink
-    [[ "$name" =~ "bose" ]] && bluetoothctl connect E4:58:BC:63:FA:B6 ## bose_soundlink
+    [[ "$name" =~ "bose" ]] && bluetoothctl disconnect $BOSE && bluetoothctl connect $BOSE ## bose_soundlink
 
 }
 
