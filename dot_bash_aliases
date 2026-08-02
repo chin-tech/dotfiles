@@ -282,14 +282,14 @@ function ecfg() {
         t*)
             file="$HOME/.config/tmux/tmux.conf"
             ;;
-        i3s*)
-            file="$HOME/.config/i3status-rust/config.toml"
+        p*)
+            file="$HOME/.config/polybar/config.ini"
             ;;
         i3*)
             file="$HOME/.config/i3/config"
             ;;
         *)
-            echo "Usage: ecfg [v(im) | b(ash) | a(lias) | g(hostty) | t(mux) | i3 | i3s(tatus)]"
+            echo "Usage: ecfg [v(im) | b(ash) | a(lias) | g(hostty) | t(mux) | i3 | p(olybar)]"
             return 1
             ;;
     esac
