@@ -255,35 +255,36 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # set $inactive_ws "#e6e6fa"
 
 #Background colors
-set $bg_color          "#011f4b"   
-set $inactive_color    "#1a3560"   
-set $sep_color         "#0d1f3c"   
-set $urgent_bg_color   "#6b1a1a"   
-
-#Text colors
-set $text_color              "#d6e4f7"   
-set $text_inactive_color     "#7a9cc9"   
-set $active_ws_text_color    "#011f4b"   
-
-#Workspace colors
-set $active_ws     "#c9a84c"   
-set $inactive_ws   "#1a3560"   
-set $border_color  "#0d1f3c"   
-
-#Urgent / alert accent
-set $urgent_text   "#f4a261"   
+# set $bg_color          "#011f4b"   
+# set $inactive_color    "#1a3560"   
+# set $sep_color         "#0d1f3c"   
+# set $urgent_bg_color   "#6b1a1a"   
+#
+# #Text colors
+# set $text_color              "#d6e4f7"   
+# set $text_inactive_color     "#7a9cc9"   
+# set $active_ws_text_color    "#011f4b"   
+#
+# #Workspace colors
+# set $active_ws     "#c9a84c"   
+# set $inactive_ws   "#1a3560"   
+# set $border_color  "#0d1f3c"   
+#
+# #Urgent / alert accent
+# set $urgent_text   "#f4a261"   
+include ~/.config/i3/themes/current
 # Start i3bar to display a workspace bar 
 bar {
         # font pango:Hack Nerd Font Mono 9, FontAwesome 9
         font pango:Monaspace Radon NF, FontAwesome 9
         status_command i3status-rs ~/.config/i3status-rust/config.toml
         colors {
-                background $bg_color
-                separator $sep_color
+                background $co_bg
+                separator $co_sep
                 #                       Border          Background      Text
-                focused_workspace       $border_color   $active_ws       $active_ws_text_color
-                inactive_workspace      $border_color   $inactive_ws     $text_inactive_color
-                urgent_workspace        $border_color   $urgent_color    $text_color
+                focused_workspace       $co_border   $co_active_ws       $co_text_active_ws
+                inactive_workspace      $co_border   $co_inactive_ws     $co_text_inactive
+                urgent_workspace        $co_border   $co_urgent_text    $co_text
         }
 }
 
