@@ -36,6 +36,58 @@ fi
 
 
 
+__load_palette() {
+    local palette_file="${1:-$HOME/.config/.prompt_palette}"
+    [ ! -f "$palette_file" ] && return 1
+
+    # Declare associative array for raw definitions
+    declare -A _palette
+
+    # 1. Read key-value pairs (ignoring comments & empty lines)
+    while IFS='=' read -r key val || [ -n "$key" ]; do
+        [[ "$key" =~ ^[[:space:]]*# ]] && continue
+        [[ -z "$key" ]] && continue
+        key=$(echo "$key" | tr -d '[:space:]')
+        val=$(echo "$val" | tr -d '[:space:]')
+        _palette["$key"]="$val"
+    done < "$palette_file"
+
+    # Helper function to convert single value (index, hex, or alias) to escape sequence
+    __format_color() {
+        local v="$1"
+        local depth=0
+        
+        # Follow key aliases until reaching a raw value (#HEX, index, or keyword)
+        while [[ -n "${_palette[$v]}" && $depth -lt 10 ]]; do
+            v="${_palette[$v]}"
+            ((depth++))
+        done
+
+        case "$v" in
+            reset) tput sgr0 ;;
+            bold)  tput bold ;;
+            \#*)   # Hex Color (#RRGGBB)
+                local hex="${v#\#}"
+                local r=$((16#${hex:0:2}))
+                local g=$((16#${hex:2:2}))
+                local b=$((16#${hex:4:2}))
+                printf "\033[38;2;%d;%d;%dm" "$r" "$g" "$b"
+                ;;
+            [0-9]*) # 256-color palette index
+                tput setaf "$v"
+                ;;
+        esac
+    }
+
+    # 2. Assign evaluated sequences to shell variables
+    for key in "${!_palette[@]}"; do
+        eval "$key=\"\$(__format_color \"\$key\")\""
+    done
+}
+
+# Load palette file
+__load_palette "$HOME/.config/.prompt_palette"
+
 
 
 ### Terminal Prompts ###
@@ -51,29 +103,30 @@ source ~/.scripts/git-prompt.sh
 #
 #
 ## TPUT COLORS ##
-R=$(tput sgr0)            # Reset
-BOLD=$(tput bold)
-LIGHT_BLUE=$(tput setaf 44)  # Approximate light blue
-DARK_BLUE=$(tput setaf 31)    # Approximate dark blue
-DARK_PURPLE=$(tput setaf 93)   # Approximate dark purple
-LIGHT_PURPLE=$(tput setaf 127)   # Approximate dark purple
-PURPLE2_LIGHT=$(tput setaf 135)   # Approximate dark purple
-CYAN=$(tput setaf 51)        # Approximate cyan
-ORANGEY=$(tput setaf 202)
-PINKY=$(tput setaf 207)
-RED=$(tput setaf 1)         # Red
-GREEN=$(tput setaf 10)
-LIGHTGREEN=$(tput setaf 118)
-ROOT_COLOR=$(tput setaf 124)
-
-
-
-## Prompt Colors ##
-UC=$LIGHT_PURPLE #User \u Color
-HC=$DARK_BLUE     #Host \h Color
-DC=$LIGHTGREEN #Dir \w Color
-GC=$RED           #GIT    Color
+# __RESET=$(tput sgr0)            # Reset
+# __BOLD=$(tput bold)
+# LIGHT_BLUE=$(tput setaf 44)  # Approximate light blue
+# DARK_BLUE=$(tput setaf 31)    # Approximate dark blue
+# DARK_PURPLE=$(tput setaf 93)   # Approximate dark purple
+# LIGHT_PURPLE=$(tput setaf 127)   # Approximate dark purple
+# PURPLE2_LIGHT=$(tput setaf 135)   # Approximate dark purple
+# CYAN=$(tput setaf 51)        # Approximate cyan
+# ORANGEY=$(tput setaf 202)
+# PINKY=$(tput setaf 207)
+# RED=$(tput setaf 1)         # Red
+# GREEN=$(tput setaf 10)
+# LIGHTGREEN=$(tput setaf 118)
+# ROOT_COLOR=$(tput setaf 124)
+#
+#
+#
+# ## Prompt Colors ##
+# __USER_COLOR=$LIGHT_PURPLE #User \u Color
+# __HOST_COLOR=$DARK_BLUE     #Host \h Color
+# __DIR_COLOR=$LIGHTGREEN #Dir \w Color
+# __GIT_COLOR=$RED           #GIT    Color
 GITP=$(__git_ps1 " (%s)")
+__load_palette ~/.config/.prompt_palette
 
 
 function wrap() {
@@ -81,32 +134,33 @@ function wrap() {
 }
 
 function gen_prompt() {
-    local RESET=$(wrap $R)
+    local RESET=$(wrap "$__RESET")
     local B_USER
     if [[ $EUID -eq 0 ]]; then 
-	 B_USER=$(wrap $BOLD$ROOT_COLOR)
+        B_USER=$(wrap "${__BOLD}${ROOT_COLOR}")
     else
-	 B_USER=$(wrap $BOLD$UC)
+        B_USER=$(wrap "${__BOLD}${__USER_COLOR}")
     fi
 
-
-    local B_HOST=$(wrap $BOLD$HC)
-    local D_COLOR=$(wrap $DC)
-    local G_COLOR=$(wrap $GC)
+    local B_HOST=$(wrap "${__BOLD}${__HOST_COLOR}")
+    local D_COLOR=$(wrap "$__DIR_COLOR")
+    local G_COLOR=$(wrap "$__GIT_COLOR")
     
-    ##
     local PS_USER="${B_USER}\u${RESET}"
     local PS_HOST="${B_HOST}\h${RESET}"
     local PS_DIR="${D_COLOR}\w${RESET}"
-    local PS_GIT="${G_COLOR}$(__git_ps1  '%s')${RESET}"
-    ##
-    local PEN_TIME="${B_USER}\d \t${RESET}"
-    if [[ -z $1 ]]; then 
-	PS1="[${PS_USER}@${PS_HOST}|${PS_DIR}:${PS_GIT}]\$ "
-    else
-	PS1="#[${PEN_TIME}]\$\n"
+    local PS_GIT=""
+    
+    if type __git_ps1 &>/dev/null; then
+        PS_GIT="${G_COLOR}$(__git_ps1 ' (%s)')${RESET}"
     fi
 
+    local PEN_TIME="${B_USER}\d \t${RESET}"
+    if [[ -z $1 ]]; then 
+        PS1="[${PS_USER}@${PS_HOST}|${PS_DIR}${PS_GIT}]\$ "
+    else
+        PS1="#[${PEN_TIME}]\$\n"
+    fi
 }
 
 
