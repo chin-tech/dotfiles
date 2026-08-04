@@ -4,7 +4,8 @@ gtk-single-instance = true
 # theme = Popping And Locking
 #theme = Ultra Violent
 # theme = Everforest Dark Hard
-theme = Catppuccin Macchiato 
+# theme = Catppuccin Macchiato 
+theme = Earthsong
 #theme = Horizon
 
 ## Windows ##
