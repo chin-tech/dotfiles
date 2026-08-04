@@ -142,7 +142,7 @@ assign [instance="calculator"] scratchpad
 assign [instance="scratch"] scratchpad
 for_window [instance="calculator"] floating enable, resize set 600 400, move position center
 for_window [instance="scratch"] floating enable, resize set 600 400, move position center
-exec --nostartup-id $term -name calculator -e gnome-calculator
+exec --nostartup-id $term -name calculator -e ghostty -e "python3"
 exec --nostartup-id $term -name scratch 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
@@ -237,3 +237,19 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+title_align center
+default_border pixel 0
+default_floating_border pixel 0
+set $OFF_RED       #B9625C
+set $PAPER_WHITE   #EAE6E1
+set $SLATE_GRAY    #7A838B
+set $REDDISH_BROWN #9C7E82
+set $BLACKISH      #0E1722
+set $OTHER_COLOR   #CEC2BD
+#NAME                  BORDER       BACKGROUND         TEXT         INDICATOR
+client.focused         $OFF_RED      $BLACKISH           $PAPER_WHITE
+client.focused_inactive $OTHER_COLOR  $BLACKISH           $SLATE_GRAY
+client.unfocused        $BLACKISH     $BLACKISH       $SLATE_GRAY
+
+
