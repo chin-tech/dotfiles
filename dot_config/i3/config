@@ -11,6 +11,7 @@ set $selected_wallpaper ~/Pictures/wallpapers/space_jelly.jpg
 floating_modifier $mod
 
 #### COLORS
+set $CRIMSON_RED   #E62B2B
 set $OFF_RED       #B9625C
 set $PAPER_WHITE   #EAE6E1
 set $SLATE_GRAY    #7A838B
@@ -85,7 +86,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -nb "$REDDISH_BROWN" -nf "$BLACKISH" -fn 'Monospace Krypton-10'
+bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -nb "$BLACKISH" -nf "$SLATE_GRAY" -fn 'Monospace Krypton-10'
 
 ## Navigation Bindings ##
 # change focus
@@ -247,11 +248,11 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 title_align center
-default_border pixel 0
-default_floating_border pixel 0
+default_border pixel 3
+default_floating_border pixel 3
 #NAME                  BORDER       BACKGROUND         TEXT         INDICATOR
-client.focused         $OFF_RED      $BLACKISH           $PAPER_WHITE
-client.focused_inactive $OTHER_COLOR  $BLACKISH           $SLATE_GRAY
+client.focused         $OFF_RED      $CRIMSON_RED           $PAPER_WHITE $CRIMSON_RED
+client.focused_inactive $OFF_RED  $OFF_RED           $SLATE_GRAY
 client.unfocused        $BLACKISH     $BLACKISH       $SLATE_GRAY
 
 
