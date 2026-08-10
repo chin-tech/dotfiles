@@ -57,7 +57,7 @@ exec --no-startup-id kdeconnectd
 #Keyboard Capslock rebind
 exec_always --no-startup-id setxkbmap -option caps:escape
 
-exec_always --no-startup-id ~/.local/bin/bt-bose.sh
+exec --no-startup-id ~/.local/bin/bt-bose.sh
 
 ## Audio ##
 # Use pactl to adjust volume in PulseAudio.
