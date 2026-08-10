@@ -38,6 +38,7 @@ exec --no-startup-id xset dpms 1800 1800 1800
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 exec --no-startup-id bt-agent --capability=NoInputNoOutput
+exec --no-startup-id ~/.local/bin/bt-bose.sh
 
 
 ## Monitors And Background
