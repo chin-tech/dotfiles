@@ -13,7 +13,7 @@ alias ls='exa'
 alias li="exa --icons"
 alias ll='exa -alF'
 alias la='exa -A'
-alias l='exa -CF'
+alias l='exa -@F'
 
 
 alias py="python3"
