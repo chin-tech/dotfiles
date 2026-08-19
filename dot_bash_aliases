@@ -19,6 +19,7 @@ alias l='exa -@F'
 alias py="python3"
 alias nxc='PYTHONWARNINGS="ignore" nxc'
 alias v="nvim"
+alias vi="nvim"
 alias vim="nvim"
 alias ipy="ipython3"
 alias tcopy="xclip -i -se clipboard -i" # -d '0'
