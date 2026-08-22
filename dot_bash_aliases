@@ -1,5 +1,6 @@
 ## Exports ##
 export EDITOR="nvim"
+export SYSTEMD_EDITOR="nvim"
 export MY_NOTES_PATH="$HOME/notes/"
 export MY_PENTEST_NOTES="$HOME/notes/knowledge_vault/Pentesting/"
 
