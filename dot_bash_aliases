@@ -106,13 +106,13 @@ function create_report_pdf() {
 }
 
 fastmap() {
-   host="${1}"
-   path="${2}"
-   if [[ -z "$path" ]]; then
-      nmap -vv -sCV -Pn -T4 --min-rate 1000 -p- "$host"
-   else
-      nmap -vv -sCV -oA "$path" -Pn -T4 --min-rate 1000 -p- "$host"
+   local host="${1}"
+   local path="${2}"
+   local default_args='-vv -Pn -sCV -T4 --min-rate 1000 -p- '
+   if [[ ! -z "$path" ]]; then
+      default_args+="-oA '$path'"
    fi
+   nmap $default_args $host
 
 }
 
