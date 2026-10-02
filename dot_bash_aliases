@@ -131,28 +131,42 @@ function bhup() {
 }
 
 function add-to-hosts() {
-   [[ -z $1 ]] && echo 'Usage: <ip> <domain> to add a box to HTB boxes' && return
-   local ip=""
-   local ip_regex='[0-9]+\.[0-9]+\.'
-   local -a domains=()
-   if [[ $1 =~ $ip_regex ]]; then
-      ip=$1
-      domains=("${@:2}")
-   else
-      ip="${@: -1}"
-      domains=("${@:1:$#-1}")
-   fi
+    [[ -z $1 ]] && echo 'Usage: <ip> <domain...> to add a box to HTB boxes' && return 1
 
-   for d in "${domains[@]}"; do
-      if grep -qw "$ip" /etc/hosts; then
-         if ! grep -w "$ip" /etc/hosts | grep -qw "$d"; then
-            sudo sed -i "/$ip/s/[[:space:]]$d\$//; /$ip/s/\$/ ${d}/" /etc/hosts
-         fi
-      else
-         sudo sed -i "/HTB Boxes/a${ip}  ${d}" /etc/hosts
-      fi
-   done
-   echo "[+] $(grep -w "$ip" /etc/hosts)"
+    local ip=""
+    local ip_regex='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+    local -a domains=()
+
+    # Determine argument ordering (IP first vs IP last)
+    if [[ $1 =~ ^[0-9]+\.[0-9]+\. ]]; then
+        ip="$1"
+        domains=("${@:2}")
+    else
+        ip="${@: -1}"
+        domains=("${@:1:$#-1}")
+    fi
+
+    [[ -z "$ip" || ${#domains[@]} -eq 0 ]] && echo "[-] Missing IP or domains." && return 1
+
+    for d in "${domains[@]}"; do
+        # Check if the IP line exists
+        if grep -E "^[[:space:]]*${ip}[[:space:]]+" /etc/hosts >/dev/null 2>&1; then
+            # Check if domain already exists as an exact whitespace-delimited entry on that IP line
+            if ! grep -E "^[[:space:]]*${ip}[[:space:]]+" /etc/hosts | grep -qE "(^|[[:space:]])${d}([[:space:]]|$)"; then
+                # Strip trailing whitespace and append domain to the end of the matching IP line
+                sudo sed -i -E "/^[[:space:]]*${ip}[[:space:]]+/ { s/[[:space:]]+$//; s/$/ ${d}/ }" /etc/hosts
+            fi
+        else
+            # Insert under marker if it exists, otherwise append to end of file
+            if grep -q "HTB Boxes" /etc/hosts; then
+                sudo sed -i "/HTB Boxes/a\\${ip}  ${d}" /etc/hosts
+            else
+                echo "${ip}  ${d}" | sudo tee -a /etc/hosts >/dev/null
+            fi
+        fi
+    done
+
+    echo "[+] $(grep -E "^[[:space:]]*${ip}[[:space:]]+" /etc/hosts)"
 }
 
 function remove-from-hosts() {
