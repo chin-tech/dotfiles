@@ -146,7 +146,7 @@ function add-to-hosts() {
    for d in "${domains[@]}"; do
       if grep -qw "$ip" /etc/hosts; then
          if ! grep -w "$ip" /etc/hosts | grep -qw "$d"; then
-            sudo sed -i "/$ip/s/[[:space:]]$domain\$//; /$ip/s/\$/ ${d}/" /etc/hosts
+            sudo sed -i "/$ip/s/[[:space:]]$d\$//; /$ip/s/\$/ ${d}/" /etc/hosts
          fi
       else
          sudo sed -i "/HTB Boxes/a${ip}  ${d}" /etc/hosts
