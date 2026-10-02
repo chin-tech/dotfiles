@@ -110,7 +110,7 @@ fastmap() {
    local path="${2}"
    local default_args='-vv -Pn -sCV -T4 --min-rate 1000 -p- '
    if [[ ! -z "$path" ]]; then
-      default_args+="-oA '$path'"
+      default_args+="-oA $path"
    fi
    nmap $default_args $host
 
