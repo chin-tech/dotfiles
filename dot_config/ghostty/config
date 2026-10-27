@@ -5,7 +5,8 @@ gtk-single-instance = true
 #theme = Ultra Violent
 # theme = Everforest Dark Hard
 # theme = Catppuccin Macchiato 
-theme = Ghostty Default Style Dark
+#theme = Ghostty Default Style Dark
+theme = Chester
 #theme = Horizon
 
 ## Windows ##
