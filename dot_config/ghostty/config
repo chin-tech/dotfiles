@@ -6,7 +6,8 @@ gtk-single-instance = true
 # theme = Everforest Dark Hard
 # theme = Catppuccin Macchiato 
 #theme = Ghostty Default Style Dark
-theme = Cyberpunk
+#theme = Hopscotch.256
+theme = Idle Toes
 #theme = Horizon
 
 ## Windows ##
