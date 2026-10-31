@@ -207,7 +207,11 @@ EOF
    if [[ -z $1 ]]; then
       input_file=$(find "${note_path}" -maxdepth 1 -type f  | fzf --preview "bat --color=always {}")
    else
-      input_file="$note_path/$1"
+      if tldr $1 &> /dev/null; then
+         input_file="$note_path/$1.patch.md"
+      else
+         input_file="$note_path/$1.page.md"
+      fi
    fi
    [[ -z $input_file ]] && usage && return 1
    ${EDITOR-vim} $input_file
