@@ -202,7 +202,7 @@ function tldredit() {
    if [[ -z $1 ]]; then
       input_file=$(find "${note_path}" -maxdepth 1 -type f  | fzf --preview "bat --color=always {}")
    else
-      if find $note_path -f -maxdepth 1-iname "${1}*.md" &>/dev/null; then
+      if find $note_path -f -maxdepth 1 -iname "${1}*.md" &>/dev/null; then
          ${EDITOR-vim} "$note_path/${1}*.md"
       else
          if tldr "$1" &>/dev/null; then
