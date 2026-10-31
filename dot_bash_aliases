@@ -198,8 +198,18 @@ function make_resume() {
 
 function tldredit() {
    local note_path=~/notes/tldr-notes/
-   local input_file=$(find "${note_path}" -maxdepth 1 -type f  | fzf --preview "bat --color=always {}")
-   [[ -z $input_file ]] && return 1
+   usage() { 
+   cat << EOF
+$0 [-h help] [file (optional)]
+EOF
+   }
+   local input_file=""
+   if [[ -z $1 ]]; then
+      input_file=$(find "${note_path}" -maxdepth 1 -type f  | fzf --preview "bat --color=always {}")
+   else
+      input_file="$note_path/$1"
+   fi
+   [[ -z $input_file ]] && usage && return 1
    [[ -f $input_file ]] && ${EDITOR-vim} $input_file
 }
 
