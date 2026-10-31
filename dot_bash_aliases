@@ -209,7 +209,7 @@ function tldredit() {
       matches=( "$note_path"/"$1"*.md )   # zsh: (N) = null_glob
       shopt -u nullglob
       if (( ${#matches[@]} == 1 )); then
-         input_file=${matches[1]}
+         input_file=${matches[0]}
       elif (( ${#matches[@]} > 1 )); then
          input_file=$(printf '%s\n' "${matches[@]}" | fzf --preview "bat --color=always {}")
       elif tldr "$1" &>/dev/null; then
