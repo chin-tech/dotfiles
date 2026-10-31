@@ -205,7 +205,7 @@ function tldredit() {
    else
       # Collect existing matches (case-insensitive, handles zsh and bash)
       local -a matches
-      matches=( "$note_path"/"$1"*.md(N) )   # zsh: (N) = null_glob
+      matches=( "$note_path"/"$1"*.md )   # zsh: (N) = null_glob
       
       if (( ${#matches[@]} == 1 )); then
          input_file=${matches[1]}
