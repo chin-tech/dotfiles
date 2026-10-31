@@ -206,9 +206,9 @@ function tldredit() {
          ${EDITOR-vim} "$note_path/${1}*.md"
       else
          if tldr "$1" &>/dev/null; then
-            input_file="${note_path}/{$1}.patch.md"
+            input_file="${note_path}/${1}.patch.md"
          else
-            input_file="${note_path}/{$1}.page.md"
+            input_file="${note_path}/${1}.page.md"
          fi
 
       fi
@@ -217,7 +217,7 @@ function tldredit() {
    [[ ! -f $input_file ]] && cat << EOF > $input_file
 # $1
 - Example Item Here
-`Example command here`
+\`Example command here\`
 EOF
    ${EDITOR-vim} $input_file
 }
