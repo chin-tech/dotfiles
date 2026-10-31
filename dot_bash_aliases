@@ -210,7 +210,7 @@ EOF
       input_file="$note_path/$1"
    fi
    [[ -z $input_file ]] && usage && return 1
-   [[ -f $input_file ]] && ${EDITOR-vim} $input_file
+   ${EDITOR-vim} $input_file
 }
 
 
