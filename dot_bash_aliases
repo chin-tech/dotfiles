@@ -197,29 +197,38 @@ function make_resume() {
 }
 
 function tldredit() {
-   local note_path=~/notes/tldr-notes/
+   local note_path=~/notes/tldr-notes
    local input_file=""
-   if [[ -z $1 ]]; then
-      input_file=$(find "${note_path}" -maxdepth 1 -type f  | fzf --preview "bat --color=always {}")
-   else
-      if find $note_path -f -maxdepth 1 -iname "${1}*.md" &>/dev/null; then
-         ${EDITOR-vim} "$note_path/${1}*.md"
-      else
-         if tldr "$1" &>/dev/null; then
-            input_file="${note_path}/${1}.patch.md"
-         else
-            input_file="${note_path}/${1}.page.md"
-         fi
 
+   if [[ -z $1 ]]; then
+      input_file=$(find "$note_path" -maxdepth 1 -type f | fzf --preview "bat --color=always {}")
+   else
+      # Collect existing matches (case-insensitive, handles zsh and bash)
+      local -a matches
+      matches=( "$note_path"/"$1"*.md(N) )   # zsh: (N) = null_glob
+      
+      if (( ${#matches[@]} == 1 )); then
+         input_file=${matches[1]}
+      elif (( ${#matches[@]} > 1 )); then
+         input_file=$(printf '%s\n' "${matches[@]}" | fzf --preview "bat --color=always {}")
+      elif tldr "$1" &>/dev/null; then
+         input_file="$note_path/$1.patch.md"
+      else
+         input_file="$note_path/$1.page.md"
       fi
    fi
-   [[ -z $input_file ]] && usage && return 1
-   [[ ! -f $input_file ]] && cat << EOF > $input_file
+
+   [[ -z $input_file ]] && return 1
+
+   if [[ ! -f $input_file ]]; then
+      cat > "$input_file" << EOF
 # $1
 - Example Item Here
 \`Example command here\`
 EOF
-   ${EDITOR-vim} $input_file
+   fi
+
+   ${EDITOR:-vim} "$input_file"
 }
 
 
